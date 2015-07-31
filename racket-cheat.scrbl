@@ -1,6 +1,7 @@
 #lang scribble/manual
 @(require "racket-cheat.rkt"
           (for-label racket/base
+                     racket/list
                      racket/string
                      racket/format
                      drracket/tool-lib))
@@ -26,10 +27,8 @@
                @link["http://groups.google.com/forum/#!forum/racket-users/"]{users@"@"}
                @link["http://groups.google.com/forum/#!forum/racket-dev/"]{dev@"@"}
                @link["http://pkg-build.racket-lang.org/doc/index.html"]{package docs}})
-   (CRow @exec{hello.rkt}
-         @racket[#,(hash-lang) #,(racketmodname racket) "Hello, world!"])
    (CRow @seclink["running-sa" #:doc '(lib "scribblings/reference/reference.scrbl")]{Running}
-         @exec{racket hello.rkt})))
+         @elem{Put @racket[#,(hash-lang) #,(racketmodname racket) "Hello, world!"] in @exec{hello.rkt} and run @exec{racket hello.rkt}})))
 
 @(CSection
   #:which 'left
@@ -50,6 +49,7 @@
          @racket[number? complex? #,MORE exact-nonnegative-integer? #,MORE zero? positive? negative? even? odd? exact? inexact?])
    (CRow "Misc"
          @racket[random]))
+  @; XXX add cool stuff from math
   (CGroup
    "Strings"
    (CRow @seclink["parse-string" #:doc '(lib "scribblings/reference/reference.scrbl")]{Literals}
@@ -61,7 +61,9 @@
    (CRow "Modify"
          @racket[string-downcase string-upcase string-trim])
    (CRow "Test"
-         @racket[string? string=? string<=? string-ci<=?]))
+         @racket[string? string=? string<=? string-ci<=?])
+   (CRow @seclink["regexp-syntax" #:doc '(lib "scribblings/reference/reference.scrbl")]{Regexp}
+         @racket[#rx"a|b" #rx"^c(a|d)+r$" regexp-quote regexp-match regexp-split regexp-replace regexp-replace*]))
   (CGroup
    "Bytes"
    (CRow @seclink["parse-string" #:doc '(lib "scribblings/reference/reference.scrbl")]{Literals}
@@ -75,33 +77,90 @@
    (CRow "Modify"
          @racket[bytes-set! bytes-copy! bytes-fill!])
    (CRow "Conversion"
-         @racket[bytes->string/utf-8 string->bytes/utf-8])
+         @racket[bytes->string/utf-8 #,LB string->bytes/utf-8])
    (CRow "Test"
          @racket[bytes? bytes=?]))
   (CGroup
    "Other"
    (CRow "Booleans"
-         @racket[#t #f not equal? eq?])
+         @racket[#t #f not equal?])
    (CRow @seclink["parse-character" #:doc '(lib "scribblings/reference/reference.scrbl")]{Characters}
-         @racket[#\a #\tab char? char->integer integer->char char<=? #,MORE char-alphabetic? #,MORE])
+         @racket[#\a #\tab #\λ char? char->integer integer->char char<=? #,MORE char-alphabetic? #,MORE])
    (CRow @seclink["parse-symbol" #:doc '(lib "scribblings/reference/reference.scrbl")]{Symbols}
-         @racket['Racket symbol? string->symbol gensym])))
+         @racket['Racket symbol? eq? string->symbol gensym])
+   ))
 
 @(CSection
   #:which 'right
-  "Collections"
+  "Syntax"
+  (CGroup
+   "Basics"
+   @; XXX move these things into a separate group related to "files" and "libraries"
+   (CRow "Modules"
+         @racket[(module+ _mod-name _body _...) #,LB
+                 (require _mod-path)
+                 (provide _id)])
+   (CRow "S-expressions"
+         @racket[quote '(a b c) quasiquote unquote `(1 2 ,(+ 1 2))])
+   (CRow "Procedure Applications"
+         @elem{@racket[(_fun _arg1 _arg2)] @LB @seclink["parse-keyword" #:doc '(lib "scribblings/reference/reference.scrbl")]{keyword args} @racket[(_fun _arg1 #:key _arg2)] @LB @racket[(apply _fun _arg1 (list _arg2))]})
+   (CRow "Procedures"
+         @racket[(lambda (x) x) (λ (x) x) #,LB
+                 (λ (x [opt 1]) (+ x opt)) #,LB
+                 (λ (x #:req key) (+ x key)) #,LB
+                 (λ (x #:opt [key 1]) (+ x key))])
+   @; XXX robby says don't show let or if
+   (CRow "Binding"
+         @racket[(let ([x 1] [y 2]) (+ x y)) #,LB
+                 (let* ([x 1] [x (+ x 1)]) x)])
+   (CRow "Conditionals"
+         @racket[(if (zero? x) 0 (/ 1 x)) #,LB
+                 (cond [(even? _x) 0] [(odd? _x) 1] #,LB
+                 #,(code "     ") [else "impossible!"]) #,LB
+                 and or])
+   (CRow "Definitions"
+         @racket[(define x 1) #,LB
+                 (define (f y) (+ x y))])
+   (CRow "Iteration"
+         @racket[for for/list for*])
+   (CRow "Multiple Values"
+         @racket[values let-values define-values call-with-values])
+   (CRow "Miscellaneous"
+         @racket[begin when unless set!])
+   (CRow "Require Sub-forms"
+         @racket[prefix-in only-in except-in rename-in for-syntax for-label #,MORE])
+   (CRow "Provide Sub-forms"
+         @racket[all-defined-out all-from-out rename-out #,MORE])))
+
+@(CSection
+  #:which 'right
+  "Data"
   (CGroup
    "Lists"
    (CRow "Create"
-         @racket[cons list list*])
+         @racket[empty list list* build-list for/list])
+   (CRow "Observe"
+         @racket[empty? length list-ref member count argmin argmax])
    (CRow "Use"
-         @racket[map for-each first second]))
+         @racket[append reverse map andmap ormap foldr in-list])
+   (CRow "Modify"
+         @racket[filter remove #,MORE sort take drop split-at partition remove-duplicates shuffle]))
+@; XXX
   (CGroup
    "Vector"
    (CRow "Create"
          @racket[build-vector vector make-vector])
    (CRow "Use"
          @racket[vector-ref vector-set!])))
+
+@; XXX
+@(CSection
+  #:which 'right
+  "Syntactic Abstractions"
+  (CGroup
+   "Basics"
+   (CRow "Definition"
+         @racket[define-syntax define-syntax-rule begin-for-syntax for-syntax])))
 
 @; XXX
 @(CSection
@@ -126,5 +185,7 @@
          @exec{raco exe program.rkt})
    (CRow "Extending DrRacket"
          @racket[drracket:language:simple-module-based-language->module-based-language-mixin])))
+
+@; XXX How to make a language, info files
 
 @(render-cheat-sheet)

@@ -84,5 +84,6 @@
   (element (style #f (list (hover-property "Click on the previous
 function to see similar functions in the documentation.")))
            "..."))
+(define LB (linebreak))
 
-(provide cheat-style CSection CGroup CRow render-cheat-sheet MORE)
+(provide cheat-style CSection CGroup CRow render-cheat-sheet MORE LB)
