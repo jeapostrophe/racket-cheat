@@ -24,6 +24,8 @@ div.Ccolumn {
     -webkit-flex: 0 0 50%;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 div.Ccolumn#Cleft {
@@ -31,6 +33,7 @@ div.Ccolumn#Cleft {
 }
 
 div.Csection {
+    min-width: 50%;
     background: #ccb;
     padding-left: 0.25em;
     padding-right: 0.25em;
