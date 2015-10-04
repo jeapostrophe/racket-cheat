@@ -48,7 +48,9 @@
    (CRow "Test"
          @racket[number? complex? #,MORE exact-nonnegative-integer? #,MORE zero? positive? negative? even? odd? exact? inexact?])
    (CRow "Misc"
-         @racket[random]))
+         @racket[random])
+   (CRow "Match Pattern"
+          @racket[(? number? n) 42]))
   @; XXX add cool stuff from math
   (CGroup
    "Strings"
@@ -57,13 +59,15 @@
    (CRow "Create"
          @racket[make-string string string-append build-string string-join])
    (CRow "Observe"
-         @racket[string-length string-ref substring string-split])
+         @racket[string-length string-ref substring string-split in-string])
    (CRow "Modify"
          @racket[string-downcase string-upcase string-trim])
    (CRow "Test"
          @racket[string? string=? string<=? string-ci<=?])
    (CRow @seclink["regexp-syntax" #:doc '(lib "scribblings/reference/reference.scrbl")]{Regexp}
-         @racket[#rx"a|b" #rx"^c(a|d)+r$" regexp-quote regexp-match regexp-split regexp-replace regexp-replace*]))
+         @racket[#rx"a|b" #rx"^c(a|d)+r$" regexp-quote regexp-match regexp-split regexp-replace regexp-replace*])
+   (CRow "Match Pattern"
+          @racket[(? string? s) "Banana?"]))
   (CGroup
    "Bytes"
    (CRow @seclink["parse-string" #:doc '(lib "scribblings/reference/reference.scrbl")]{Literals}
@@ -73,13 +77,15 @@
    (CRow "Numbers"
          @racket[integer->integer-bytes real->floating-point-bytes])
    (CRow "Observe"
-         @racket[bytes-length bytes-ref subbytes])
+         @racket[bytes-length bytes-ref subbytes in-bytes])
    (CRow "Modify"
          @racket[bytes-set! bytes-copy! bytes-fill!])
    (CRow "Conversion"
          @racket[bytes->string/utf-8 #,LB string->bytes/utf-8])
    (CRow "Test"
-         @racket[bytes? bytes=?]))
+         @racket[bytes? bytes=?])
+   (CRow "Match Pattern"
+          @racket[(? bytes? b) #"0xDEADBEEF"]))
   (CGroup
    "Other"
    (CRow "Booleans"
@@ -88,11 +94,18 @@
          @racket[#\a #\tab #\λ char? char->integer integer->char char<=? #,MORE char-alphabetic? #,MORE])
    (CRow @seclink["parse-symbol" #:doc '(lib "scribblings/reference/reference.scrbl")]{Symbols}
          @racket['Racket symbol? eq? string->symbol gensym])
-   ))
+   (CRow "Boxes"
+         @racket[box? box unbox set-box! box-cas!])
+   (CRow "Procedures"
+         @racket[procedure? apply compose compose1 keyword-apply procedure-rename procedure-arity curry arity-includes?])
+   (CRow "Void"
+         @racket[void? void])
+   (CRow "Undefined"
+         @racket[undefined])))
 
 @(CSection
   #:which 'right
-  "Syntax"
+  "Syntax (Beginner)"
   (CGroup
    "Basics"
    @; XXX move these things into a separate group related to "files" and "libraries"
@@ -123,14 +136,43 @@
                  (define (f y) (+ x y))])
    (CRow "Iteration"
          @racket[for for/list for*])
-   (CRow "Multiple Values"
-         @racket[values let-values define-values call-with-values])
-   (CRow "Miscellaneous"
-         @racket[begin when unless set!])
+   (CRow "Blocks"
+         @racket[begin when unless])
    (CRow "Require Sub-forms"
          @racket[prefix-in only-in except-in rename-in for-syntax for-label #,MORE])
    (CRow "Provide Sub-forms"
-         @racket[all-defined-out all-from-out rename-out #,MORE])))
+         @racket[all-defined-out all-from-out rename-out #,MORE contract-out]))
+
+  (CGroup
+    "Structures"
+    (CRow "Definition"
+          @racket[(struct dillo (weight color))])
+    (CRow "Create"
+          @racket[(define danny (_dillo 17.5 'purple))])
+    (CRow "Observe"
+          @racket[(_dillo? _danny)
+                  (_dillo-weight _danny)
+                  (_dillo-color _danny)])
+    (CRow "Modify"
+          @racket[(struct-copy _dillo _danny ([weight 18.0]))])
+    (CRow "Match Pattern"
+          @racket[(_dillo w c)]))
+
+  (CGroup
+   "Pattern Matching"
+   (CRow "Basics"
+         @racket[(match _value [_pat _body] _...)])
+   (CRow "Definitions"
+         @racket[(match-define _pat _value)])
+   (CRow "Patterns"
+         @racket[(_quote _datum) (list _lvp _...)
+                 (_list-no-order _pat _...)
+                 (_vector _lvp _...)
+                 (_struct-id _pat _...)
+                 (_regexp _rx-expr _pat)
+                 (_or _pat _...)
+                 (_and _pat _...)
+                 (_? _expr _pat _...)])))
 
 @(CSection
   #:which 'right
@@ -140,18 +182,126 @@
    (CRow "Create"
          @racket[empty list list* build-list for/list])
    (CRow "Observe"
-         @racket[empty? length list-ref member count argmin argmax])
+         @racket[empty? list? pair? length list-ref member count argmin argmax])
    (CRow "Use"
          @racket[append reverse map andmap ormap foldr in-list])
    (CRow "Modify"
-         @racket[filter remove #,MORE sort take drop split-at partition remove-duplicates shuffle]))
-@; XXX
+         @racket[filter remove #,MORE sort take drop split-at partition remove-duplicates shuffle])
+   (CRow "Match Pattern"
+          @racket[(list _a _b _c) (list* _a _b _more) (list _top _more _...)]))
+
+  (CGroup
+   "Immutable Hash"
+   (CRow "Create"
+         @racket[hash hasheq])
+   (CRow "Observe"
+         @racket[hash? hash-ref hash-has-key? hash-count in-hash in-hash-keys in-hash-values])
+   (CRow "Modify"
+         @racket[hash-set hash-update hash-remove]))
+
   (CGroup
    "Vector"
    (CRow "Create"
-         @racket[build-vector vector make-vector])
-   (CRow "Use"
-         @racket[vector-ref vector-set!])))
+         @racket[build-vector vector make-vector list->vector])
+   (CRow "Observe"
+         @racket[vector? vector-length vector-ref in-vector])
+   (CRow "Modify"
+         @racket[vector-set! vector-fill! vector-copy! vector-map!])
+   (CRow "Vector"
+          @racket[(_vector _x _y _z) (_vector _x _y _calabi–yau _...)]))
+
+  (CGroup
+   "Streams"
+   (CRow "Create"
+         @racket[stream stream* empty-stream])
+   (CRow "Observe"
+         @racket[stream-empty? stream-first stream-rest in-stream]))
+
+  (CGroup
+   "Mutable Hash"
+   (CRow "Create"
+         @racket[make-hash make-hasheq])
+   (CRow "Observe"
+         @racket[hash? hash-ref hash-has-key? hash-count in-hash in-hash-keys in-hash-values])
+   (CRow "Modify"
+         @racket[hash-set! hash-ref! hash-update! hash-remove!])))
+
+@(CSection
+  #:which 'right
+  "Syntax (Intermediate)"
+  (CGroup
+   "Basics"
+   (CRow "Mutation"
+         @racket[set!])
+   (CRow "Exceptions"
+         @racket[error with-handlers raise exit])
+   (CRow "Promises"
+         @racket[promise? delay force])
+   (CRow "Continuations"
+         @racket[let/cc let/ec dynamic-wind
+                        call-with-continuation-prompt
+                        abort-current-continuation
+                        call-with-composable-continuation])
+   (CRow "Continuation Marks"
+         @racket[continuation-marks with-continuation-mark continuation-mark-set->list])
+   (CRow "Multiple Values"
+         @racket[values let-values define-values call-with-values]))
+  
+  (CGroup
+   "Contracts"
+   (CRow "Basics"
+         @racket[any/c or/c and/c false/c integer-in vector/c listof list/c #,MORE])
+   (CRow "Functions"
+         @racket[-> ->* ->i])
+   (CRow "Application"
+         @racket[contract-out recontract-out with-contract define/contract]))
+
+  (CGroup
+   "Iteration"
+   (CRow "Sequences"
+         @racket[in-range in-naturals in-list in-vector in-port in-lines in-hash in-hash-keys in-hash-values in-directory in-cycle stop-before stop-after in-stream])
+   (CRow "Generators"
+         @racket[generator yield in-generator]))
+  
+  (CGroup
+   "Structures"
+   (CRow "Sub-structures"
+         @racket[(struct 2d (x y)) (struct 3d _2d (z))
+                 (_2d-x (_3d 1 2 3))])
+   (CRow "Mutation"
+         @racket[(struct monster (type [hp #:mutable]))
+                 (define healie (_monster 'slime 10))
+                 (_set-monster-hp! _healie 0)])
+   (CRow "Serialization"
+         @racket[(struct txn (who what where) #:prefab)
+                 (write (txn "Mustard" "Spatula" "Observatory"))]))
+
+  (CGroup
+   "Generics"
+   (CRow "Definition"
+         @racket[define-generics])
+   (CRow "Instantiation"
+         @racket[(struct even-set ()
+                   #:methods gen:set
+                   [(define (set-member? st i)
+                      (even? i))])]))
+
+  (CGroup
+   "Classes"
+   (CRow "Definition"
+         @racket[interface class*])
+   (CRow "Instantiation"
+         @racket[make-object new instantiate])
+   (CRow "Methods"
+         @racket[send send/apply send/keyword-apply send* send+])
+   (CRow "Fields"
+         @racket[get-field set-field!])
+   (CRow "Mixins"
+         @racket[mixin])
+   (CRow "Traits"
+         @racket[trait trait-sum trait-exclude trait-rename #,MORE])
+   (CRow "Contracts"
+         @racket[class/c instanceof/c is-a?/c implementation?/c subclass?/c])))
 
 @; XXX
 @(CSection
@@ -187,5 +337,7 @@
          @racket[drracket:language:simple-module-based-language->module-based-language-mixin])))
 
 @; XXX How to make a language, info files
+
+@; DS cheat sheet: http://stackoverflow.com/questions/27584416/in-racket-what-is-the-advantage-of-lists-over-vectors/27589146#27589146
 
 @(render-cheat-sheet)
