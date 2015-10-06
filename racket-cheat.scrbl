@@ -137,13 +137,14 @@
    "Basics"
    @; XXX move these things into a separate group related to "files" and "libraries"
    (CRow "Modules"
-         @racket[(module+ _mod-name _body _...) #,LB
+         @racket[(module+ main _body _...) #,LB
+                 (module+ test _body _...) #,LB
                  (require _mod-path)
                  (provide _id)])
    (CRow "S-expressions"
          @racket[quote '(a b c) quasiquote unquote `(1 2 ,(+ 1 2))])
    (CRow "Procedure Applications"
-         @elem{@racket[(_fun _arg1 _arg2)] @LB @seclink["parse-keyword" #:doc '(lib "scribblings/reference/reference.scrbl")]{keyword args} @racket[(_fun _arg1 #:key _arg2)] @LB @racket[(apply _fun _arg1 (list _arg2))]})
+         @elem{@racket[(_fn _arg1 _arg2)] @LB @seclink["parse-keyword" #:doc '(lib "scribblings/reference/reference.scrbl")]{keyword args} @racket[(_fn _arg1 #:key _arg2)] @LB @racket[(apply _fn _arg1 (list _arg2))]})
    (CRow "Procedures"
          @racket[(lambda (x) x) (λ (x) x) #,LB
                  (λ (x [opt 1]) (+ x opt)) #,LB
