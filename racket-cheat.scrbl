@@ -4,6 +4,33 @@
                      racket/list
                      racket/string
                      racket/format
+                     racket/syntax
+                     racket/port
+                     racket/pretty
+                     racket/sandbox
+                     (only-in ffi/unsafe
+                              ffi-lib _uint32 _fun malloc free)
+                     slideshow
+                     pict/code
+                     syntax/parse
+                     json
+                     (only-in xml read-xml write-xml write-xexpr)
+                     (only-in parser-tools/lex lexer)
+                     (only-in parser-tools/yacc parser)
+                     parser-tools/cfg-parser
+                     db
+                     net/http-client
+                     net/url
+                     net/smtp
+                     net/imap
+                     racket/stxparam
+                     racket/runtime-path
+                     racket/undefined
+                     racket/generator
+                     racket/generic
+                     racket/trait
+                     racket/date
+                     racket/async-channel
                      drracket/tool-lib))
 
 @; XXX maybe tag things with a level and produce multiple versions of
@@ -175,7 +202,7 @@
                  (_? _expr _pat _...)])))
 
 @(CSection
-  #:which 'right
+  #:which 'left
   "Data"
   (CGroup
    "Lists"
@@ -242,6 +269,10 @@
                         call-with-continuation-prompt
                         abort-current-continuation
                         call-with-composable-continuation])
+   (CRow "Parameters"
+         @racket[make-parameter parameterize])
+   (CRow "External Files Needed at Runtime"
+         @racket[define-runtime-path])
    (CRow "Continuation Marks"
          @racket[continuation-marks with-continuation-mark continuation-mark-set->list])
    (CRow "Multiple Values"
@@ -303,30 +334,108 @@
    (CRow "Contracts"
          @racket[class/c instanceof/c is-a?/c implementation?/c subclass?/c])))
 
-@; XXX
 @(CSection
   #:which 'right
   "Syntactic Abstractions"
   (CGroup
-   "Basics"
-   (CRow "Definition"
-         @racket[define-syntax define-syntax-rule begin-for-syntax for-syntax])))
-
-@; XXX
-@(CSection
-  #:which 'right
-  "Input/Output"
-  (CGroup
    #f
+   (CRow "Definition"
+         @racket[define-syntax define-syntax-rule begin-for-syntax for-syntax])
+   (CRow "Templates"
+         @racket[syntax syntax/loc with-syntax])
+   (CRow "Syntax Objects"
+         @racket[syntax-source syntax-line #,MORE syntax->datum datum->syntax generate-temporaries format-id])
+   (CRow "Transformers"
+         @racket[make-set!-transformer make-rename-transformer local-expand syntax-local-value syntax-local-name syntax-local-lift-expression #,MORE])
+   (CRow "Syntax Parameters"
+         @racket[define-syntax-parameter syntax-parameterize syntax-parameter-value])
+   (CRow "Parsing ()-Syntax"
+         @racket[syntax-parse define-syntax-class pattern])
+   (CRow "Parsing Raw Syntax"
+         @racket[lexer parser cfg-parser])
+   ))
+
+@(CSection
+  #:which 'left
+  "Systems"
+  (CGroup
+   "Input/Output"
    (CRow "Formatting"
-         @racket[~a ~v ~s ~e ~r])))
+         @racket[~a ~v ~s ~e ~r pretty-format])
+   (CRow "Input"
+         @racket[read read-bytes peek-byte])
+   (CRow "Output"
+         @racket[write write-bytes display displayln pretty-print])
+   (CRow "Ports and Files"
+         @racket[with-input-from-file with-output-to-file flush-output file-position make-pipe with-output-to-string with-input-from-string port->bytes port->lines #,MORE]))
+  (CGroup
+   "Files"
+   (CRow "Paths"
+         @racket[build-path bytes->path path->bytes path-replace-suffix #,MORE])
+   (CRow "Files"
+         @racket[file-exists? rename-file-or-directory copy-directory/files current-directory make-directory delete-directory/files directory-list filesystem-change-evt file->bytes file->lines make-temporary-file]))
+  (CGroup
+   "Miscellaneous"
+   (CRow "Time"
+         @; XXX link to gregor
+         @racket[current-seconds current-inexact-milliseconds date->string date-display-format])
+   (CRow "Command-Line Parsing"
+         @racket[command-line])
+   (CRow "FFI"
+         @racket[ffi-lib _uint32 #,MORE _fun malloc free]))
+  (CGroup
+   "Networking"
+   (CRow "TCP"
+         @racket[tcp-listen tcp-connect tcp-accept tcp-close])
+   (CRow "HTTP"
+         @racket[http-conn http-conn-open! http-conn-send! http-conn-recv! http-conn-sendrecv! http-sendrecv])
+   (CRow "URLs"
+         @racket[string->url url->string url-query])
+   (CRow "Email"
+         @racket[smtp-send-message imap-connect #,MORE])
+   (CRow "JSON"
+         @racket[write-json read-json])
+   (CRow "XML"
+         @racket[read-xml write-xml write-xexpr])
+   (CRow "Databases"
+         @racket[postgresql-connect mysql-connect sqlite3-connect query-exec query-rows prepare start-transaction #,MORE]))
+  (CGroup
+   "Security"
+   (CRow "Custodians"
+         @racket[make-custodian custodian-shutdown-all current-custodian])
+   (CRow "Sandboxes"
+         @racket[make-evaluator make-module-evaluator]))
+  (CGroup
+   "Concurrency"
+   (CRow "Threads"
+         @racket[thread kill-thread thread-wait make-thread-group])
+   (CRow "Events"
+         @racket[sync choice-evt wrap-evt handle-evt alarm-evt #,MORE])
+   (CRow "Channels"
+         @racket[make-channel channel-get channel-put])
+   (CRow "Semaphores"
+         @racket[make-semaphore semaphore-post semaphore-wait])
+   (CRow "Async Channels"
+         @racket[make-async-channel async-channel-get async-channel-put]))
+  (CGroup
+   "Parallelism"
+   (CRow "Futures"
+         @racket[future touch processor-count make-fsemaphore #,MORE])
+   (CRow "Places"
+         @racket[dynamic-place place place-wait place-wait place-channel #,MORE])
+   (CRow "Processes"
+         @racket[subprocess system*])))
 
 @(CSection
   #:which 'right
   "Tools"
   (CGroup
-   @; XXX
-   "Packages")
+   @seclink["top" #:doc '(lib "pkg/scribblings/pkg.scrbl")]{Packages}
+   (CRow "Inspection" @exec{raco pkg show})
+   (CRow "Finding" @link["http://pkgs.racket-lang.org"]{pkgs.racket-lang.org})
+   (CRow "Installing" @exec{raco pkg install})
+   (CRow "Updating" @exec{raco pkg update})
+   (CRow "Removing" @exec{raco pkg remove}))
   (CGroup
    "Miscellaneous"
    (CRow @seclink["make" #:doc '(lib "scribblings/raco/raco.scrbl")]{Compiling}
@@ -334,7 +443,9 @@
    (CRow @seclink["exe" #:doc '(lib "scribblings/raco/raco.scrbl")]{Building Executables}
          @exec{raco exe program.rkt})
    (CRow "Extending DrRacket"
-         @racket[drracket:language:simple-module-based-language->module-based-language-mixin])))
+         @racket[drracket:language:simple-module-based-language->module-based-language-mixin])
+   (CRow "Slides"
+         @racket[slide standard-fish code])))
 
 @; XXX How to make a language, info files
 
