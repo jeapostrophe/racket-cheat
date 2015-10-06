@@ -441,6 +441,8 @@
    "Miscellaneous"
    (CRow @seclink["make" #:doc '(lib "scribblings/raco/raco.scrbl")]{Compiling}
          @exec{raco make program.rkt})
+   (CRow @seclink["test" #:doc '(lib "scribblings/raco/raco.scrbl")]{Testing}
+         @exec{raco test program.rkt a-directory})
    (CRow @seclink["exe" #:doc '(lib "scribblings/raco/raco.scrbl")]{Building Executables}
          @exec{raco exe program.rkt})
    (CRow "Extending DrRacket"
