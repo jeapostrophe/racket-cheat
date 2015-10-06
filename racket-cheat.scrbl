@@ -344,14 +344,14 @@
          @racket[define-syntax define-syntax-rule begin-for-syntax for-syntax])
    (CRow "Templates"
          @racket[syntax syntax/loc with-syntax])
+   (CRow "Parsing ()-Syntax"
+         @racket[syntax-parse define-syntax-class pattern])
    (CRow "Syntax Objects"
          @racket[syntax-source syntax-line #,MORE syntax->datum datum->syntax generate-temporaries format-id])
    (CRow "Transformers"
          @racket[make-set!-transformer make-rename-transformer local-expand syntax-local-value syntax-local-name syntax-local-lift-expression #,MORE])
    (CRow "Syntax Parameters"
          @racket[define-syntax-parameter syntax-parameterize syntax-parameter-value])
-   (CRow "Parsing ()-Syntax"
-         @racket[syntax-parse define-syntax-class pattern])
    (CRow "Parsing Raw Syntax"
          @racket[lexer parser cfg-parser])
    ))
