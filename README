@@ -1,1 +1,10 @@
 racket-cheat - a cheat sheet for Racket
+
+INSTALL:
+$ raco pkg racket-cheat
+
+Look at the top of your docs
+
+Recently built version here:
+
+http://pkg-build.racket-lang.org/doc/racket-cheat/
