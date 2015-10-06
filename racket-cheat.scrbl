@@ -235,8 +235,8 @@
          @racket[vector? vector-length vector-ref in-vector])
    (CRow "Modify"
          @racket[vector-set! vector-fill! vector-copy! vector-map!])
-   (CRow "Vector"
-          @racket[(_vector _x _y _z) (_vector _x _y _calabi–yau _...)]))
+   (CRow "Match Pattern"
+          @racket[(vector _x _y _z) (vector _x _y _calabi–yau _...)]))
 
   (CGroup
    "Streams"
