@@ -170,9 +170,9 @@
    (CRow "Blocks"
          @racket[begin when unless])
    (CRow "Require Sub-forms"
-         @racket[prefix-in only-in except-in rename-in for-syntax for-label #,MORE])
+         @racket[prefix-in only-in except-in rename-in for-label #,MORE])
    (CRow "Provide Sub-forms"
-         @racket[all-defined-out all-from-out rename-out #,MORE contract-out]))
+         @racket[all-defined-out all-from-out rename-out #,MORE]))
 
   (CGroup
     "Structures"
