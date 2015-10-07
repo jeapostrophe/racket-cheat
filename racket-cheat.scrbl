@@ -13,6 +13,7 @@
                      slideshow
                      pict/code
                      syntax/parse
+                     syntax/parse/define
                      json
                      (only-in xml read-xml write-xml write-xexpr)
                      (only-in parser-tools/lex lexer)
@@ -341,7 +342,7 @@
   (CGroup
    #f
    (CRow "Definition"
-         @racket[define-syntax define-syntax-rule begin-for-syntax for-syntax])
+         @racket[define-syntax define-simple-macro begin-for-syntax for-syntax])
    (CRow "Templates"
          @racket[syntax syntax/loc with-syntax])
    (CRow "Parsing ()-Syntax"
