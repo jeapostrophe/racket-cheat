@@ -1,7 +1,7 @@
 racket-cheat - a cheat sheet for Racket
 
 INSTALL:
-$ raco pkg racket-cheat
+$ raco pkg install racket-cheat
 
 Look at the top of your docs
 
