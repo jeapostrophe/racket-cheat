@@ -51,7 +51,7 @@
                @link["http://docs.racket-lang.org"]{docs}
                @link["https://github.com/racket"]{git}})
    (CRow "Community"
-         @elem{@link["http://pkgs.racket-lang.org"]{packages}
+         @elem{@link["https://pkgs.racket-lang.org"]{packages}
                @link["http://groups.google.com/forum/#!forum/racket-users/"]{users@"@"}
                @link["http://groups.google.com/forum/#!forum/racket-dev/"]{dev@"@"}
                @link["http://pkg-build.racket-lang.org/doc/index.html"]{package docs}
@@ -437,7 +437,7 @@
   (CGroup
    @seclink["top" #:doc '(lib "pkg/scribblings/pkg.scrbl")]{Packages}
    (CRow "Inspection" @exec{raco pkg show})
-   (CRow "Finding" @link["http://pkgs.racket-lang.org"]{pkgs.racket-lang.org})
+   (CRow "Finding" @link["https://pkgs.racket-lang.org"]{pkgs.racket-lang.org})
    (CRow "Installing" @exec{raco pkg install})
    (CRow "Updating" @exec{raco pkg update})
    (CRow "Removing" @exec{raco pkg remove}))
