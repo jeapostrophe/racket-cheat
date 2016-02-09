@@ -54,7 +54,6 @@
          @elem{@link["https://pkgs.racket-lang.org"]{packages}
                @link["http://groups.google.com/forum/#!forum/racket-users/"]{users@"@"}
                @link["http://groups.google.com/forum/#!forum/racket-dev/"]{dev@"@"}
-               @link["http://pkg-build.racket-lang.org/doc/index.html"]{package docs}
                @link["http://racket-lang.org/irc-chat.html"]{irc}
                @link["http://racket-slack.herokuapp.com"]{slack}
                @link["https://twitter.com/racketlang"]{twitter}})
