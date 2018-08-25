@@ -307,6 +307,12 @@
          @racket[(struct monster (type [hp #:mutable]))
                  (define healie (_monster 'slime 10))
                  (_set-monster-hp! _healie 0)])
+   (CRow "Transparency"
+         @racket[(struct cash ($ ¢) #:transparent)
+                 (struct->vector (cash 5 95))])
+   (CRow "Printing"
+         @racket[(struct nickname [n v] #:methods gen:custom-write [(define (write-proc nn p mode) (fprintf p (nickname-n nn)))])
+                 (displayln (nickname "evens" (in-range 0 100 2)))])
    (CRow "Serialization"
          @racket[(struct txn (who what where) #:prefab)
                  (write (txn "Mustard" "Spatula" "Observatory"))]))
