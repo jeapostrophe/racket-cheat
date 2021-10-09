@@ -20,3 +20,6 @@
 (define scribblings '(("racket-cheat.scrbl" () (getting-started))))
 (define pkg-desc "a cheat sheet for Racket")
 (define pkg-authors '(jay))
+
+(define license
+  '(Apache-2.0 OR MIT))
