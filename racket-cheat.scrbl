@@ -52,11 +52,9 @@
                @link["https://github.com/racket"]{git}})
    (CRow "Community"
          @elem{@link["https://pkgs.racket-lang.org"]{packages}
-               @link["http://groups.google.com/forum/#!forum/racket-users/"]{users@"@"}
-               @link["http://groups.google.com/forum/#!forum/racket-dev/"]{dev@"@"}
-               @link["http://racket-lang.org/irc-chat.html"]{irc}
-               @link["http://racket-slack.herokuapp.com"]{slack}
-               @link["https://twitter.com/racketlang"]{twitter}})
+               @link["https://racket.discourse.group/"]{Discourse}
+               @link["https://discord.gg/6Zq8sH5"]{Discord}
+               @link["https://racket-lang.org/#community"]{more...}
    (CRow @seclink["running-sa" #:doc '(lib "scribblings/reference/reference.scrbl")]{Running}
          @elem{Put @racket[#,(hash-lang) #,(racketmodname racket) "Hello, world!"] in @exec{hello.rkt} and run @exec{racket hello.rkt}})))
 
