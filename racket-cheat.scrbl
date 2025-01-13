@@ -54,7 +54,7 @@
          @elem{@link["https://pkgs.racket-lang.org"]{packages}
                @link["https://racket.discourse.group/"]{Discourse}
                @link["https://discord.gg/6Zq8sH5"]{Discord}
-               @link["https://racket-lang.org/#community"]{more...}
+               @link["https://racket-lang.org/#community"]{more...}})
    (CRow @seclink["running-sa" #:doc '(lib "scribblings/reference/reference.scrbl")]{Running}
          @elem{Put @racket[#,(hash-lang) #,(racketmodname racket) "Hello, world!"] in @exec{hello.rkt} and run @exec{racket hello.rkt}})))
 
